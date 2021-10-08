@@ -2,6 +2,13 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "The AWS CloudFormation template for this Serverless application",
   "Resources": {
+    "CollectLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/docbase-search-dev-collect",
+        "RetentionInDays": 7
+      }
+    },
     "IndexLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
@@ -98,12 +105,48 @@
         }
       }
     },
+    "CollectLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
+          "S3Key": "serverless/docbase-search/dev/1633682967069-2021-10-08T08:49:27.069Z/docbase-search.zip"
+        },
+        "Handler": "src/collect.handler",
+        "Runtime": "nodejs14.x",
+        "FunctionName": "docbase-search-dev-collect",
+        "MemorySize": 1024,
+        "Timeout": 300,
+        "Architectures": [
+          "arm64"
+        ],
+        "Environment": {
+          "Variables": {
+            "TZ": "Asia/Tokyo",
+            "S3_BUCKET": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "SERVERLESS_STAGE": "dev",
+            "SERVERLESS_S3_BUCKET": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
+            "DOCBASE_DOMAIN": "connehito"
+          }
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "IamRoleLambdaExecution",
+            "Arn"
+          ]
+        }
+      },
+      "DependsOn": [
+        "CollectLogGroup"
+      ]
+    },
     "IndexLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
-          "S3Bucket": "mryhryki-jp",
-          "S3Key": "temp/serverless/docbase-search/dev/1633681891729-2021-10-08T08:31:31.729Z/docbase-search.zip"
+          "S3Bucket": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
+          "S3Key": "serverless/docbase-search/dev/1633682967069-2021-10-08T08:49:27.069Z/docbase-search.zip"
         },
         "Handler": "src/index.handler",
         "Runtime": "nodejs14.x",
@@ -117,7 +160,10 @@
           "Variables": {
             "TZ": "Asia/Tokyo",
             "S3_BUCKET": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
-            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "SERVERLESS_STAGE": "dev",
+            "SERVERLESS_S3_BUCKET": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
+            "DOCBASE_DOMAIN": "connehito"
           }
         },
         "Role": {
@@ -130,6 +176,43 @@
       "DependsOn": [
         "IndexLogGroup"
       ]
+    },
+    "CollectEventsRuleSchedule1": {
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "ScheduleExpression": "cron(0 17 * * ? *)",
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Fn::GetAtt": [
+                "CollectLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Id": "collectSchedule"
+          }
+        ]
+      }
+    },
+    "CollectLambdaPermissionEventsRuleSchedule1": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "CollectLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "events.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "CollectEventsRuleSchedule1",
+            "Arn"
+          ]
+        }
+      }
     },
     "HttpApi": {
       "Type": "AWS::ApiGatewayV2::Api",
@@ -229,7 +312,7 @@
   },
   "Outputs": {
     "ServerlessDeploymentBucketName": {
-      "Value": "mryhryki-jp",
+      "Value": "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20",
       "Export": {
         "Name": "sls-docbase-search-dev-ServerlessDeploymentBucketName"
       }

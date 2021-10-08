@@ -6,7 +6,9 @@
   "private": true,
   "description": "DocBase の投稿を収集し、検索用の画面を提供するプロジェクト",
   "scripts": {
-    "deploy": "serverless deploy --stage=dev",
+    "deploy": "serverless deploy --stage=${SERVERLESS_STAGE:-dev}",
+    "deploy:collect": "serverless deploy --stage=${SERVERLESS_STAGE:-dev} --function collect",
+    "deploy:index": "serverless deploy --stage=${SERVERLESS_STAGE:-dev} --function index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,6 +17,7 @@
   },
   "dependencies": {
     "serverless": "^2.61.0",
+    "serverless-dotenv-plugin": "^3.10.0",
     "serverless-esbuild": "^1.19.0"
   }
 }
