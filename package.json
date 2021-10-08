@@ -7,8 +7,8 @@
   "description": "DocBase の投稿を収集し、検索用の画面を提供するプロジェクト",
   "scripts": {
     "deploy": "serverless deploy --stage=${SERVERLESS_STAGE:-dev}",
-    "deploy:collect": "serverless deploy --stage=${SERVERLESS_STAGE:-dev} --function collect",
-    "deploy:index": "serverless deploy --stage=${SERVERLESS_STAGE:-dev} --function index",
+    "deploy:collect": "serverless deploy function --function collect --stage=${SERVERLESS_STAGE:-dev}",
+    "deploy:view": "serverless deploy function --function view --stage=${SERVERLESS_STAGE:-dev}",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,6 +16,8 @@
     "url": "git+https://github.com/mryhryki/docbase-search.git"
   },
   "dependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "aws-sdk": "^2.1003.0",
     "serverless": "^2.61.0",
     "serverless-dotenv-plugin": "^3.10.0",
     "serverless-esbuild": "^1.19.0"

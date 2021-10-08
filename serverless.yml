@@ -13,12 +13,12 @@ functions:
   collect:
     memorySize: 1024
     timeout: 300
-    handler: "src/collect.handler"
+    handler: "src/collect/index.handler"
     events:
       - schedule:
           rate: "cron(0 17 * * ? *)" # 17:00 UTC, 02:00 JST
-  index:
-    handler: "src/index.handler"
+  view:
+    handler: "src/view/index.handler"
     events:
       - httpApi: "GET /"
 
@@ -42,6 +42,7 @@ provider:
   environment:
     TZ: "Asia/Tokyo"
     S3_BUCKET: "${self:custom.s3Bucket}"
+    DOCBASE_DOMAIN: "${self:custom.s3Bucket}"
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
   iam:
     role:
