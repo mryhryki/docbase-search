@@ -6,11 +6,15 @@
   "private": true,
   "description": "DocBase の投稿を収集し、検索用の画面を提供するプロジェクト",
   "scripts": {
-    "deploy": "",
+    "deploy": "serverless deploy --stage=dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mryhryki/docbase-search.git"
+  },
+  "dependencies": {
+    "serverless": "^2.61.0",
+    "serverless-esbuild": "^1.19.0"
   }
 }

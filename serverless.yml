@@ -1,0 +1,64 @@
+service: 'docbase-search'
+frameworkVersion: '2'
+
+custom:
+  s3Bucket: "b24814e6-e8b8-48d0-b1d6-2fe41a11ed20"
+  esbuild:
+    bundle: true
+    minify: true
+
+functions:
+#  collect:
+#    memorySize: 1024
+#    timeout: 300
+#    handler: "dist/collect.handler"
+#    events:
+#      - schedule:
+#          rate: "cron(0 17 * * ? *)" # 17:00 UTC, 02:00 JST
+  index:
+    handler: "src/index.handler"
+    events:
+      - httpApi: "GET /"
+#  post:
+#    handler: "dist/post.handler"
+
+#package:
+#  patterns:
+#    - "!**"
+#    - "dist/**"
+
+provider:
+  name: "aws"
+  runtime: "nodejs14.x"
+  architecture: "arm64"
+  stage: "${opt:stage}"
+  region: "ap-northeast-1"
+  memorySize: 256
+  timeout: 10
+  logRetentionInDays: 7
+  apiGateway:
+    minimumCompressionSize: 128
+    binaryMediaTypes:
+      - "multipart/form-data"
+  deploymentBucket: "mryhryki-jp"
+  deploymentPrefix: "temp/serverless"
+  versionFunctions: false
+  lambdaHashingVersion: '20201221'
+  environment:
+    TZ: "Asia/Tokyo"
+    S3_BUCKET: "${self:custom.s3Bucket}"
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+            - "s3:ListBucket"
+            - "s3:PutObject"
+          Resource:
+            - "arn:aws:s3:::${self:custom.s3Bucket}"
+            - "arn:aws:s3:::${self:custom.s3Bucket}/*"
+
+plugins:
+  - serverless-esbuild
