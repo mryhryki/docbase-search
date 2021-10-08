@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "noEmit": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "strict": true
+  }
+}

@@ -43,6 +43,8 @@ provider:
     TZ: "Asia/Tokyo"
     S3_BUCKET: "${self:custom.s3Bucket}"
     DOCBASE_DOMAIN: "${self:custom.s3Bucket}"
+    BASIC_AUTH_USER: "${env:BASIC_AUTH_USER}"
+    BASIC_AUTH_PASS: "${env:BASIC_AUTH_PASS}"
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
   iam:
     role:
