@@ -35,7 +35,6 @@ export const selectS3Object = (expression: string): Promise<DocBasePost[]> =>
             buffer = Buffer.concat([buffer, event.Records.Payload]);
             while (true) {
               const index = buffer.indexOf("\n");
-              console.info("INDEX:", index);
               if (index === -1) {
                 break;
               }
