@@ -56,3 +56,11 @@ $ npm run deploy # Serverless Framework でのデプロイ実行
 
 - `collect`: 日本時間で 02:00 に定期実行し、DocBase API 経由で全投稿データを取得します。
 - `view`: API Gateway 経由でのリクエストを処理し、HTML を返却します。
+
+## Memo
+
+### DocBase API の制限
+
+- DocBase のメモの検索APIは、検索エンジンの仕様で10,000件までしか取れない仕様になっている
+  - 参考: https://gist.github.com/mryhryki/3524a7a444b0af484cb7a49244bb160d
+  - このプロジェクトでは作成年ごとに取得することで回避しているが、年10,000件を超える場合は更に期間を細かくするか別の方法を考える必要がある
