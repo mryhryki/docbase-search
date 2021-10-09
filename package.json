@@ -10,9 +10,9 @@
   "private": true,
   "description": "DocBase の投稿を収集し、検索用の画面を提供するプロジェクト",
   "scripts": {
-    "deploy": "npm exec serverless deploy --stage=${SERVERLESS_STAGE:-dev}",
-    "deploy:collect": "npm exec serverless deploy function --function collect --stage=${SERVERLESS_STAGE:-dev}",
-    "deploy:view": "npm exec serverless deploy function --function view --stage=${SERVERLESS_STAGE:-dev}",
+    "deploy": "npm exec -- serverless deploy",
+    "deploy:collect": "npm exec -- serverless deploy function --function collect",
+    "deploy:view": "npm exec -- serverless deploy function --function view",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },
@@ -22,8 +22,12 @@
   },
   "dependencies": {
     "@types/aws-sdk": "^2.7.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node-fetch": "^3.0.3",
     "aws-sdk": "^2.1003.0",
-    "serverless-dotenv-plugin": "^3.10.0",
+    "fs-extra": "^10.0.0",
+    "node-fetch": "^3.0.0",
+    "node-gzip": "^1.1.2",
     "serverless-esbuild": "^1.19.0"
   },
   "devDependencies": {

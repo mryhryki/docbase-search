@@ -1,5 +1,5 @@
 import { DocBasePost } from "../common/post";
-import { getDocBaseDomain } from "../common/docbase";
+import { getDocBaseDomain } from "../common/env";
 
 export const buildHtml = (titleQuery: string, bodyQuery: string, posts: DocBasePost[]): string => {
   const docbaseDomain = getDocBaseDomain()

@@ -1,10 +1,14 @@
 service: 'docbase-search'
 frameworkVersion: '2'
+useDotenv: true
 
 custom:
   stage: "${env:SERVERLESS_STAGE}"
   s3Bucket: "${env:SERVERLESS_S3_BUCKET}"
-  docbaseDomain: "connehito"
+  docbaseDomain: "${env:DOCBASE_DOMAIN}"
+  docbaseAccessToken: "${env:DOCBASE_ACCESS_TOKEN}"
+  basicAuthUser: "${env:BASIC_AUTH_USER}"
+  basicAuthPass: "${env:BASIC_AUTH_PASS}"
   esbuild:
     bundle: true
     minify: true
@@ -12,7 +16,7 @@ custom:
 functions:
   collect:
     memorySize: 1024
-    timeout: 300
+    timeout: 900
     handler: "src/collect/index.handler"
     events:
       - schedule:
@@ -38,13 +42,13 @@ provider:
   deploymentBucket: "${self:custom.s3Bucket}"
   deploymentPrefix: "serverless"
   versionFunctions: false
-  lambdaHashingVersion: '20201221'
   environment:
-    TZ: "Asia/Tokyo"
     S3_BUCKET: "${self:custom.s3Bucket}"
-    DOCBASE_DOMAIN: "${self:custom.s3Bucket}"
-    BASIC_AUTH_USER: "${env:BASIC_AUTH_USER}"
-    BASIC_AUTH_PASS: "${env:BASIC_AUTH_PASS}"
+    DOCBASE_DOMAIN: "${self:custom.docbaseDomain}"
+    DOCBASE_ACCESS_TOKEN: "${self:custom.docbaseAccessToken}"
+    BASIC_AUTH_USER: "${self:custom.basicAuthUser}"
+    BASIC_AUTH_PASS: "${self:custom.basicAuthPass}"
+    TZ: "Asia/Tokyo"
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
   iam:
     role:
@@ -60,4 +64,3 @@ provider:
 
 plugins:
   - serverless-esbuild
-  - serverless-dotenv-plugin

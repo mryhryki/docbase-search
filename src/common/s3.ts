@@ -1,9 +1,9 @@
 import { S3 } from "aws-sdk";
-import { getDocBaseDomain } from "./docbase";
 import { DocBasePost } from "./post";
+import { getDocBaseDomain, getS3Bucket } from "./env";
 
 export const s3 = new S3({ apiVersion: "2006-03-01" });
-const S3Bucket: string = process.env.S3_BUCKET ?? "";
+const S3Bucket: string = getS3Bucket();
 
 export const selectS3Object = (expression: string): Promise<DocBasePost[]> => new Promise((resolve, reject) => {
   s3.selectObjectContent({
@@ -68,3 +68,11 @@ export const selectS3Object = (expression: string): Promise<DocBasePost[]> => ne
     eventStream.on("end", () => resolve(result));
   });
 });
+
+export const uploadFile = async (s3Key: string, body: S3.Body): Promise<void> => {
+  await s3.putObject({
+    Bucket: S3Bucket,
+    Key: s3Key,
+    Body: body,
+  }).promise();
+};

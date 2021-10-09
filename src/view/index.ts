@@ -36,9 +36,7 @@ export const handler = async (event: any): Promise<any> => {
         whereQueries.push(`s.body LIKE '%${bq}%'`);
       });
     }
-    posts = await selectS3Object(`Select s.*
-                                  from S3Object s
-                                  WHERE ${whereQueries.join(" AND ")}`);
+    posts = await selectS3Object(`Select s.* from S3Object s WHERE ${whereQueries.join(" AND ")}`);
   }
 
   return {

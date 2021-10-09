@@ -1,6 +1,8 @@
+import { getBasicAuthPass, getBasicAuthUser } from "../common/env";
+
 export const verifyBasicAuth = (authorization: unknown): boolean => {
-  const basicAuthUser = (process.env.BASIC_AUTH_USER ?? "").trim();
-  const basicAuthPass = (process.env.BASIC_AUTH_PASS ?? "").trim();
+  const basicAuthUser = getBasicAuthUser();
+  const basicAuthPass = getBasicAuthPass();
   const useBasicAuth = basicAuthUser !== "" && basicAuthPass !== "";
 
   if (!useBasicAuth) {
@@ -15,6 +17,5 @@ export const verifyBasicAuth = (authorization: unknown): boolean => {
 
   const token = authorization.substr(6);
   const [user, pass] = Buffer.from(token, "base64").toString("utf-8").split(":");
-
   return user === basicAuthUser && pass === basicAuthPass;
 };
