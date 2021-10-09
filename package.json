@@ -14,7 +14,9 @@
     "deploy:collect": "npm exec -- serverless deploy function --function collect",
     "deploy:view": "npm exec -- serverless deploy function --function view",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "type": "tsc --noEmit",
+    "type:watch": "tsc --noEmit --watch"
   },
   "repository": {
     "type": "git",
