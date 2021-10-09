@@ -20,13 +20,15 @@ export const selectS3Object = (expression: string): Promise<DocBasePost[]> => ne
     if (data.Payload == null) {
       return [];
     }
-    // TODO: resolve type error
-    const eventStream: any = data.Payload;
+    const eventStream = Array.isArray(data.Payload) ? null :data.Payload;
+    if (eventStream == null) {
+      return
+    }
     const result: DocBasePost[] = [];
     let buffer: Buffer = Buffer.from([]);
 
-    eventStream.on("data", (event: any) => {
-      if (event.Records) {
+    eventStream.on("data", (event) => {
+      if (event.Records && event.Records.Payload != null) {
         buffer = Buffer.concat([buffer, event.Records.Payload]);
         while (true) {
           const index = buffer.indexOf("\n");

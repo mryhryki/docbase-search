@@ -20,7 +20,7 @@ const SearchRangeList: [string, string][] = Array.from({ length: YearsLength })
   .map((_, i) => i + DocbaseLaunchedYear)
   .map((year) => ([`${year}-01-01`, `${year}-12-31`]));
 
-export const handler = async (): Promise<any> => {
+export const handler = async (): Promise<unknown> => {
   // Fetch all DocBase posts
   for await (const [startDate, endDate] of SearchRangeList) {
     let page = 1;
@@ -54,5 +54,5 @@ export const handler = async (): Promise<any> => {
   // Upload S3
   await uploadFile(s3IndexFileKey, createReadStream(indexFilePath));
   await uploadFile(s3IndexFileKey, createReadStream(indexFileGzPath));
-  return { result: "OK" };
+  return { success: true };
 };
