@@ -11,5 +11,5 @@ const getEnvironmentVariable = (key: string, required = true): string => {
 export const getDocBaseDomain = (): string => getEnvironmentVariable("DOCBASE_DOMAIN")
 export const getDocBaseAccessToken = (): string => getEnvironmentVariable("DOCBASE_ACCESS_TOKEN")
 export const getS3Bucket = (): string => getEnvironmentVariable("S3_BUCKET")
-export const getBasicAuthUser = (): string => getEnvironmentVariable("BASIC_AUTH_USER")
-export const getBasicAuthPass = (): string => getEnvironmentVariable("BASIC_AUTH_PASS")
+export const getBasicAuthUser = (): string => getEnvironmentVariable("BASIC_AUTH_USER", false)
+export const getBasicAuthPass = (): string => getEnvironmentVariable("BASIC_AUTH_PASS", false)
