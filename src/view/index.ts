@@ -3,7 +3,7 @@ import { DocBasePost } from "../common/post";
 import { selectS3Object } from "../common/s3";
 import { verifyBasicAuth } from "./basic_auth";
 
-const splitChars = new RegExp("[ ]+");
+const splitChars = new RegExp("[\s　]+");
 const splitQuery = (query: string): string[] =>
   query.trim().normalize().split(splitChars).map((s) => s.trim()).filter((s) => s !== "");
 
@@ -28,12 +28,12 @@ export const handler = async (event: any): Promise<any> => {
     const whereQueries: string[] = [];
     if (titleQuery !== "") {
       splitQuery(titleQuery).forEach((tq) => {
-        whereQueries.push(`s.title LIKE '%${tq}%'`);
+        whereQueries.push(`LOWER(s.title) LIKE LOWER('%${tq}%')`);
       });
     }
     if (bodyQuery !== "") {
       splitQuery(bodyQuery).forEach((bq) => {
-        whereQueries.push(`s.body LIKE '%${bq}%'`);
+        whereQueries.push(`LOWER(s.body) LIKE LOWER('%${bq}%')`);
       });
     }
     posts = await selectS3Object(`Select s.* from S3Object s WHERE ${whereQueries.join(" AND ")}`);

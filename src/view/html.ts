@@ -31,8 +31,8 @@ export const buildHtml = (titleQuery: string, bodyQuery: string, posts: DocBaseP
       <input id="docbase-post-title-query" type="text" name="title" value="${titleQuery}">
     </div>
     <div>
-      <label for="docbase-post-title-query">本文検索（部分一致、空白で複数検索）</label>
-      <input id="docbase-post-title-query" type="text" name="body" value="${bodyQuery}">
+      <label for="docbase-post-body-query">本文検索（部分一致、空白で複数検索）</label>
+      <input id="docbase-post-body-query" type="text" name="body" value="${bodyQuery}">
     </div>
     <div style="text-align: center;">
       <input type="submit" value="検索" />
@@ -47,18 +47,16 @@ export const buildHtml = (titleQuery: string, bodyQuery: string, posts: DocBaseP
         <th>作成者</th>
         <th>作成日</th>
         <th>タグ</th>
-        <th>DocBaseで見る</th>
       </tr>
     </thead>
     <tbody>
       ${posts.map((post) => (`
         <tr>
           <td>${post.id}</td>
-          <td>${post.title}</td>
+          <td><a href="${post.url}" target="_blank" rel="noopener noreferrer">${post.title}</a></td>
           <td>${post.user.name}</td>
           <td>${post.created_at.substr(0, 10)}</td>
           <td>${post.tags.map(({name}) => name).join(", ")}</td>
-          <td><a href="${post.url}" target="_blank" rel="noopener noreferrer">開く</a></td>
         </tr>
       `)).join("")}
     </tbody>

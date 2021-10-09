@@ -8,11 +8,11 @@ const S3Bucket: string = getS3Bucket();
 export const selectS3Object = (expression: string): Promise<DocBasePost[]> => new Promise((resolve, reject) => {
   s3.selectObjectContent({
     Bucket: S3Bucket,
-    Key: `docbase/${getDocBaseDomain()}/index.jsonl`,
+    Key: `docbase/${getDocBaseDomain()}/index.jsonl.gz`,
     Expression: expression,
     ExpressionType: "SQL",
-    InputSerialization: { "JSON": { "Type": "Lines" } },
-    OutputSerialization: { "JSON": {} },
+    InputSerialization: { JSON: { Type: "Lines" }, CompressionType: "GZIP" },
+    OutputSerialization: { JSON: {} },
   }, (err, data) => {
     if (err != null) {
       return reject(err);
