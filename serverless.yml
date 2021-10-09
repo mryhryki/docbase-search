@@ -15,7 +15,7 @@ custom:
 
 functions:
   collect:
-    memorySize: 1024
+    memorySize: 512
     timeout: 900
     handler: "src/collect/index.handler"
     events:
