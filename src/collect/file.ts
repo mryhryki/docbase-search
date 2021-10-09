@@ -25,7 +25,7 @@ export const listJsonFilesInDir = async (dirPath: string): Promise<string[]> => 
   list.sort((f1, f2) => {
     const id1 = parseInt(f1.split("/").splice(-1, 1)[0].replace(".json", ""), 10);
     const id2 = parseInt(f2.split("/").splice(-1, 1)[0].replace(".json", ""), 10);
-    return id1 - id2;
+    return id2 - id1;
   });
   return list;
 };
