@@ -26,8 +26,8 @@ jobs:
           node-version: 14
       - name: prepare
         run: npm ci
-#      - name: check lint
-#        run: npm run lint
+      - name: check lint
+        run: npm run lint
       - name: check type
         run: npm run type
       - name: run test

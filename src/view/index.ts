@@ -3,17 +3,27 @@ import { DocBasePost } from "../common/post";
 import { selectS3Object } from "../common/s3";
 import { verifyBasicAuth } from "./basic_auth";
 
-const splitChars = new RegExp("[\s　]+");
+const splitChars = new RegExp("[s　]+");
 const splitQuery = (query: string): string[] =>
-  query.trim().normalize().split(splitChars).map((s) => s.trim()).filter((s) => s !== "");
+  query
+    .trim()
+    .normalize()
+    .split(splitChars)
+    .map((s) => s.trim())
+    .filter((s) => s !== "");
 
-export const handler = async (event: any): Promise<any> => {
+interface LambdaEventViaApiGatewayHttpApi {
+  headers: { [key: string]: string | undefined };
+  queryStringParameters: { [key: string]: string | undefined };
+}
+
+export const handler = async (event: LambdaEventViaApiGatewayHttpApi): Promise<unknown> => {
   if (!verifyBasicAuth(event.headers.authorization)) {
     return {
       statusCode: 401,
       headers: {
         "Content-Type": "text/html;charset=utf-8",
-        "WWW-Authenticate": "Basic realm=\"SECRET AREA\"",
+        "WWW-Authenticate": 'Basic realm="SECRET AREA"',
       },
       body: "認証が必要です。",
     };

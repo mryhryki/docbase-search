@@ -18,7 +18,7 @@ const CurrentYear = new Date().getFullYear();
 const YearsLength = CurrentYear - DocbaseLaunchedYear + 1;
 const SearchRangeList: [string, string][] = Array.from({ length: YearsLength })
   .map((_, i) => i + DocbaseLaunchedYear)
-  .map((year) => ([`${year}-01-01`, `${year}-12-31`]));
+  .map((year) => [`${year}-01-01`, `${year}-12-31`]);
 
 export const handler = async (): Promise<unknown> => {
   // Fetch all DocBase posts
@@ -27,9 +27,11 @@ export const handler = async (): Promise<unknown> => {
     while (true) {
       console.log(`Range: ${startDate}~${endDate}, Page: ${page}`);
       const { posts, hasNext } = await fetchPosts(page++, startDate, endDate);
-      await Promise.all(posts.map(async (post) => {
-        await writeFile(`${exportDirectoryBase}/posts/${post.id}.json`, JSON.stringify(post));
-      }));
+      await Promise.all(
+        posts.map(async (post) => {
+          await writeFile(`${exportDirectoryBase}/posts/${post.id}.json`, JSON.stringify(post));
+        })
+      );
       if (!hasNext) {
         break;
       }

@@ -2,8 +2,8 @@ import { DocBasePost } from "../common/post";
 import { getDocBaseDomain } from "../common/env";
 
 export const buildHtml = (titleQuery: string, bodyQuery: string, posts: DocBasePost[]): string => {
-  const docbaseDomain = getDocBaseDomain()
-  const docbaseRootUrl = `https://${docbaseDomain}.docbase.io/`
+  const docbaseDomain = getDocBaseDomain();
+  const docbaseRootUrl = `https://${docbaseDomain}.docbase.io/`;
 
   return `
 <!doctype html>
@@ -50,18 +50,22 @@ export const buildHtml = (titleQuery: string, bodyQuery: string, posts: DocBaseP
       </tr>
     </thead>
     <tbody>
-      ${posts.map((post) => (`
+      ${posts
+        .map(
+          (post) => `
         <tr>
           <td>${post.id}</td>
           <td><a href="${post.url}" target="_blank" rel="noopener noreferrer">${post.title}</a></td>
           <td>${post.user.name}</td>
           <td>${post.created_at.substr(0, 10)}</td>
-          <td>${post.tags.map(({name}) => name).join(", ")}</td>
+          <td>${post.tags.map(({ name }) => name).join(", ")}</td>
         </tr>
-      `)).join("")}
+      `
+        )
+        .join("")}
     </tbody>
   </table>
 </body>
 </html>
-  `
-}
+  `;
+};
