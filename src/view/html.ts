@@ -13,28 +13,30 @@ export const buildHtml = (titleQuery: string, bodyQuery: string, posts: DocBaseP
   <meta name="viewport" content="width=device-width">
   <title>Search DocBase</title>
   <style>
-    body { margin: 0 auto; padding: 16px; width: calc(100vw - 32px); max-width: 960px; }
+    body { margin: 0; padding: 16px; width: calc(100vw - 32px) }
     h1 { font-size: 1.5rem; text-align: center; }
-    label { display: block; margin-top: 16px; } 
+    label { display: block; margin-top: 16px; }
     input[type=text] { display: block; padding: 8px; width: calc(100% - 16px); margin-top: 4px; }
     input[type=submit] { margin-top: 16px; padding: 4px 16px; text-align: center; font-weight: bold; }
     table { width: 100%; margin-top: 32px; border-collapse: collapse }
     caption { padding: 4px }
     th, td { border: 1px solid lightgray; padding: 4px 12px; }
+    .form-item { max-width: 960px; margin: 0 auto; }
+    .text-center { text-align: center; }
   </style>
 </head>
 <body>
   <h1>Search DocBase for <a href="${docbaseRootUrl}">${docbaseDomain}</a></h1>
   <form action="./" method="GET">
-    <div>
+    <div class="form-item">
       <label for="docbase-post-title-query">タイトル検索（部分一致、空白で複数検索）</label>
       <input id="docbase-post-title-query" type="text" name="title" value="${titleQuery}">
     </div>
-    <div>
+    <div class="form-item">
       <label for="docbase-post-body-query">本文検索（部分一致、空白で複数検索）</label>
       <input id="docbase-post-body-query" type="text" name="body" value="${bodyQuery}">
     </div>
-    <div style="text-align: center;">
+    <div class="form-item text-center">
       <input type="submit" value="検索" />
     </div>
   </form>
